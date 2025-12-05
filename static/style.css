@@ -1,0 +1,417 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body 
+{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+
+.container 
+{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+header 
+{
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+    header h1 
+    {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+
+.main-card 
+{
+    text-align: center;
+    padding: 3rem;
+}
+
+
+.features 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+
+.feature 
+{
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+    .feature h3 
+    {
+        color: #667eea;
+        margin-bottom: 1rem;
+    }
+
+
+.btn 
+{
+    display: inline-block;
+    padding: 12px 24px;
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+    .btn:hover 
+    {
+        background: #5a67d8;
+    }
+
+
+.btn-primary 
+{
+    background: #48bb78;
+}
+
+    .btn-primary:hover 
+    {
+        background: #38a169;
+    }
+
+
+.btn-back 
+{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background: rgba(255,255,255,0.2);
+}
+
+
+.card 
+{
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+
+.form-group 
+{
+    margin-bottom: 1.5rem;
+}
+
+    .form-group label 
+    {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+
+.form-select, .form-input 
+{
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+    .form-select:focus, .form-input:focus 
+    {
+        outline: none;
+        border-color: #667eea;
+    }
+
+
+.checkbox-group 
+{
+    display: flex;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+    .checkbox-group label 
+    {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+
+.form-block 
+{
+    display: none;
+    background: #f7fafc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border-left: 4px solid #667eea;
+}
+
+
+.employees-list 
+{
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 1rem;
+}
+
+
+.employee-item 
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+    .employee-item:last-child 
+    {
+        border-bottom: none;
+    }
+
+    .employee-item label 
+    {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+    }
+
+
+.date-input 
+{
+    padding: 8px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+}
+
+
+.form-actions 
+{
+    text-align: center;
+    margin-top: 2rem;
+}
+
+
+.btn-large 
+{
+    padding: 15px 40px;
+    font-size: 18px;
+}
+
+
+
+.table-container 
+{
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+
+.timesheet-table 
+{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+    .timesheet-table th,
+    .timesheet-table td 
+    {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+    }
+
+    .timesheet-table th 
+    {
+        background: #f7fafc;
+        font-weight: 600;
+    }
+
+    .timesheet-table thead th 
+    {
+        background: #667eea;
+        color: white;
+    }
+
+
+.attendance-cell 
+{
+    font-weight: bold;
+}
+
+    .attendance-cell.работа
+    {
+        color: #48bb78;
+        background: #f0fff4;
+    }
+
+    .attendance-cell.отпуск 
+    {
+        color: #ed8936;
+        background: #fffaf0;
+    }
+
+    .attendance-cell.больничный 
+    {
+        color: #ed64a6;
+        background: #fff5f7;
+    }
+
+
+.employee-name 
+{
+    font-weight: 600;
+    text-align: left;
+}
+
+
+.stats-container 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+
+.stat-card 
+{
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+.stat-number 
+{
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #667eea;
+    margin-top: 0.5rem;
+}
+
+
+.legend 
+{
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+
+.legend-item 
+{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+.timesheet-info 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+
+.info-item 
+{
+    padding: 1rem;
+    background: #f7fafc;
+    border-radius: 6px;
+}
+
+
+.status-badge 
+{
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+    .status-badge.created 
+    {
+        background: #c6f6d5;
+        color: #22543d;
+    }
+
+
+.actions 
+{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+
+@media (max-width: 768px) 
+{
+    .container 
+    {
+        padding: 10px;
+    }
+
+    header h1 
+    {
+        font-size: 1.8rem;
+    }
+
+    .features 
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .checkbox-group
+    {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .timesheet-table 
+    {
+        font-size: 14px;
+    }
+
+    .employee-item 
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система табельного учета</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Система табельного учета</h1>
+            <p>Автоматическое формирование табелей рабочего времени</p>
+        </header>
+        <main>
+            <div class="card main-card">
+                <p>Данная система позволяет автоматически формировать табели учета рабочего времени на основе производственного календаря.</p>
+                <div class="features">
+                    <div class="feature">
+                        <h3>Автоматический календарь</h3>
+                    </div>
+                    <div class="feature">
+                        <h3>Учет отпусков</h3>
+                    </div>
+                    <div class="feature">
+                        <h3>Учет больничных</h3>
+                    </div>
+                </div>
+                <a href="{{ url_for('create_timesheet') }}" class="btn btn-primary">
+                    Создать новый табель
+                </a>
+            </div>
+            {% if timesheets_data %}
+            <div class="card">
+                <h2>Последние табели</h2>
+                <ul class="timesheet-list">
+                    {% for id, ts in timesheets_data.items()|sort(attribute='0', reverse=True) %}
+                    <li>
+                        <a href="{{ url_for('view_timesheet', timesheet_id=id) }}">
+                            Табель #{{ id }} от {{ ts.created_date }}
+                        </a>
+                        <span class="badge">{{ ts.period }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

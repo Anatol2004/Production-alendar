@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Табель #{{ timesheet.id }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Табель учета рабочего времени #{{ timesheet.id }}</h1>
+            <div class="header-actions">
+                <a href="{{ url_for('index') }}" class="btn">Главная</a>
+                <a href="{{ url_for('create_timesheet') }}" class="btn btn-primary">Новый табель</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="card">
+                <div class="timesheet-info">
+                    <div class="info-item">
+                        <strong>Дата создания:</strong> {{ timesheet.created_date }}
+                    </div>
+                    <div class="info-item">
+                        <strong>Отдел:</strong> {{ department.name if department else 'Не указан' }}
+                    </div>
+                    <div class="info-item">
+                        <strong>Период:</strong> {{ timesheet.period }}
+                    </div>
+                    <div class="info-item">
+                        <strong>Статус:</strong>
+                        <span class="status-badge {{ timesheet.status }}">
+                            {{ 'Создан' if timesheet.status == 'created' else timesheet.status }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Всего сотрудников</h3>
+                    <p class="stat-number">{{ timesheet.employees|length }}</p>
+                </div>
+                {% if timesheet.has_vacation %}
+                <div class="stat-card">
+                    <h3>В отпуске</h3>
+                    <p class="stat-number">{{ timesheet.vacations|length }}</p>
+                </div>
+                {% endif %}
+                {% if timesheet.has_sick_leave %}
+                <div class="stat-card">
+                    <h3>На больничном</h3>
+                    <p class="stat-number">{{ timesheet.sick_leaves|length }}</p>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card">
+                <h2>Табель рабочего времени</h2>
+                <div class="table-container">
+                    <table class="timesheet-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Сотрудник</th>
+                                <th rowspan="2">Должность</th>
+                                <th colspan="{{ timesheet.work_days|length }}">Рабочие дни</th>
+                            </tr>
+                            <tr>
+                                {% for day in timesheet.work_days %}
+                                <th>{{ day }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in timesheet.employees %}
+                            <tr>
+                                <td class="employee-name">{{ employee.name }}</td>
+                                <td>{{ employee.position }}</td>
+                                {% for day in timesheet.work_days %}
+                                <td class="attendance-cell {{ employee.attendance[day] }}">
+                                    {% if employee.attendance[day] == 'работа' %}
+                                    ✓
+                                    {% elif employee.attendance[day] == 'отпуск' %}                                   
+                                    {% elif employee.attendance[day] == 'больничный' %}
+                                    {% else %}
+                                    {{ employee.attendance[day] }}
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card legend-card">
+                <h3>:</h3>
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="attendance-cell работа">✓</span>Работа
+                    </div>
+                    <div class="legend-item">
+                        <span class="attendance-cell отпуск"></span>Отпуск
+                    </div>
+                    <div class="legend-item">
+                        <span class="attendance-cell больничный"></span>Больничный
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="window.print()" class="btn">Печать</button>
+                <button onclick="exportToExcel()" class="btn btn-primary">Экспорт в Excel</button>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

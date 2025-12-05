@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание табеля</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            const vacationCheckbox = document.getElementById('has_vacation');
+            const sickCheckbox = document.getElementById('has_sick_leave');
+            const vacationBlock = document.getElementById('vacation_block');
+            const sickBlock = document.getElementById('sick_block');
+
+            function toggleBlock(checkbox, block)
+            {
+                if (checkbox.checked)
+                {
+                    block.style.display = 'block';
+                } else
+                {
+                    block.style.display = 'none';
+                }
+            }
+
+            vacationCheckbox.addEventListener('change', function ()
+            {
+                toggleBlock(this, vacationBlock);
+            });
+
+            sickCheckbox.addEventListener('change', function ()
+            {
+                toggleBlock(this, sickBlock);
+            });
+
+            toggleBlock(vacationCheckbox, vacationBlock);
+            toggleBlock(sickCheckbox, sickBlock);
+
+            const departmentSelect = document.getElementById('department');
+            const vacationEmployees = document.getElementById('vacation_employees');
+            const sickEmployees = document.getElementById('sick_employees');
+
+            departmentSelect.addEventListener('change', function ()
+            {
+                const departmentId = this.value;
+
+                fetch(`/api/employees/${departmentId}`)
+                    .then(response => response.json())
+                    .then(employees =>
+                    {
+                        vacationEmployees.innerHTML = '';
+                        employees.forEach(employee =>
+                        {
+                            const div = document.createElement('div');
+                            div.className = 'employee-item';
+                            div.innerHTML = `
+                                <label>
+                                    <input type="checkbox" name="vacation_employee[]" value="${employee.id}">
+                                    ${employee.name} (${employee.position})
+                                </label>
+                                <input type="date" name="vacation_date[]" class="date-input"
+                                       min="{{ min_date }}" max="{{ max_date }}">
+                            `;
+                            vacationEmployees.appendChild(div);
+                        });
+                        sickEmployees.innerHTML = '';
+                        employees.forEach(employee => {
+                            const div = document.createElement('div');
+                            div.className = 'employee-item';
+                            div.innerHTML = `
+                                <label>
+                                    <input type="checkbox" name="sick_employee[]" value="${employee.id}">
+                                    ${employee.name} (${employee.position})
+                                </label>
+                                <input type="date" name="sick_date[]" class="date-input"
+                                       min="{{ min_date }}" max="{{ max_date }}">
+                            `;
+                            sickEmployees.appendChild(div);
+                        });
+                    });
+            });
+
+            fetch('/api/workdays')
+                .then(response => response.json())
+                .then(workDays => {
+                    if (workDays.length > 0) {
+                        const minDate = workDays[0];
+                        const maxDate = workDays[workDays.length - 1];
+
+                        document.querySelectorAll('.date-input').forEach(input =>
+                        {
+                            input.min = minDate;
+                            input.max = maxDate;
+                        });
+                    }
+                });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Создание нового табеля</h1>
+            <a href="{{ url_for('index') }}" class="btn btn-back">← Назад</a>
+        </header>
+
+        <main>
+            <form method="POST" class="card">
+                <div class="form-group">
+                    <label for="department">Отдел:</label>
+                    <select id="department" name="department" required class="form-select">
+                        <option value="">Выберите отдел</option>
+                        {% for dept in departments %}
+                        <option value="{{ dept.id }}">{{ dept.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="has_vacation" name="has_vacation">
+                        Наличие отпуска за 2 недели
+                    </label>
+                    <label>
+                        <input type="checkbox" id="has_sick_leave" name="has_sick_leave">
+                        Наличие больничных за 2 недели
+                    </label>
+                </div>
+
+                <div id="vacation_block" class="form-block">
+                    <h3>Отпуска сотрудников</h3>
+                    <div id="vacation_employees" class="employees-list">
+                        <p>Выберите отдел для загрузки списка сотрудников</p>
+                    </div>
+                </div>
+
+                <div id="sick_block" class="form-block">
+                    <h3>Больничные сотрудников</h3>
+                    <div id="sick_employees" class="employees-list">
+                        <p>Выберите отдел для загрузки списка сотрудников</p>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-large">
+                        Создать табель
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+</body>
+</html>
